@@ -1,24 +1,10 @@
-#!/bin/zsh
-
-set -eu
+#!/bin/bash
 
 # --------------------------------------------------------------------------------------------------
-# Copyright (C) 2022 DEV ICE SOFTWARE TECHNOLOGIES
+# Copyright (C) 2023 MARIUS KOPP
 # --------------------------------------------------------------------------------------------------
 
-echo ""
-echo ""
-echo ""
-echo " █▀▄ █ ▄▀▄ ▄▀▀    ██▄ █ █ █ █   █▀▄    ▄▀▄ █ "
-echo " █▄▀ █ ▀▄▀ ▄█▀    █▄█ ▀▄█ █ █▄▄ █▄▀    █▀█ █ "
-echo ""
-echo "INSTALLER"
-echo ""
-
-# --------------------------------------------------------------------------------------------------
-# 1. VARIABLES
-# --------------------------------------------------------------------------------------------------
-
+# Define color variables for displaying colored text
 BGBLACK='\033[40m'
 BGBLUE='\033[44m'
 BGCYAN='\033[46m'
@@ -37,18 +23,36 @@ RED='\033[0;31m'
 WHITE='\033[0;37m'
 YELLOW='\033[0;33m'
 
-# --------------------------------------------------------------------------------------------------
-# 2. INSTALL
-# --------------------------------------------------------------------------------------------------
+# Function to display banner
+display_banner() {
+  echo -e "${BGWHITE}"
+  echo " █▀▄ █ ▄▀▄ ▄▀▀    ██▄ █ █ █ █   █▀▄    ▄▀▄ █ "
+  echo " █▄▀ █ ▀▄▀ ▄█▀    █▄█ ▀▄█ █ █▄▄ █▄▀    █▀█ █ "
+  echo -e "${NOCOLOR}"
+  echo "INSTALLER"
+  echo ""
+}
 
-echo -e "${RED}INSTALLING..."
+# Function to install DIOS
+install_dios() {
+  echo -e "${RED}INSTALLING...${NOCOLOR}"
 
-rm -rf ~/dios
+  # Remove existing DIOS directory if present
+  if [ -d ~/dios ]; then
+    rm -rf ~/dios
+  fi
 
-mkdir ~/dios
+  # Clone DIOS from Github
+  mkdir ~/dios && cd ~/dios
+  git clone https://github.com/DEV-ICE-SOFTWARE-TECHNOLOGIES/DIOS .
 
-cd ~/dios
+  # Execute DIOS.sh script with '-i' flag
+  bash ./DIOS.sh -i
+}
 
-git clone https://github.com/DEV-ICE-SOFTWARE-TECHNOLOGIES/DIOS .
+# Main script starts here
+set -euv
 
-zsh ./DIOS.sh -i
+display_banner
+
+install_dios
